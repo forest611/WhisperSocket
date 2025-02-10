@@ -16,7 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 // URLの設定
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(3000); // HTTP
+    var port = builder.Configuration.GetValue<int>("Server:Port");
+    serverOptions.ListenAnyIP(port); // 設定ファイルからポートを読み込む
 });
 
 var app = builder.Build();
@@ -27,7 +28,6 @@ app.UseHttpsRedirection();
 app.UseWebSockets(new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromMinutes(5),  // タイムアウト時間を5分に延長
-    ReceiveBufferSize = AudioSettings.RECEIVE_BUFFER_SIZE  // 音声設定に合わせたバッファサイズ
 });
 
 app.UseAuthorization();
