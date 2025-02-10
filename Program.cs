@@ -12,7 +12,6 @@ builder.Services.AddSingleton(new WhisperService(
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 // URLの設定
 builder.WebHost.ConfigureKestrel(serverOptions =>
@@ -22,19 +21,13 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
 var app = builder.Build();
 
-// // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
-
 app.UseHttpsRedirection();
 
 // WebSocketミドルウェアを追加
 app.UseWebSockets(new WebSocketOptions
 {
-    KeepAliveInterval = TimeSpan.FromMinutes(2)
+    KeepAliveInterval = TimeSpan.FromMinutes(5),  // タイムアウト時間を5分に延長
+    ReceiveBufferSize = AudioSettings.RECEIVE_BUFFER_SIZE  // 音声設定に合わせたバッファサイズ
 });
 
 app.UseAuthorization();
