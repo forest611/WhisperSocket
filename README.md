@@ -46,6 +46,16 @@ dotnet run
 
 ### Docker実行
 
+#### DockerHubからプル
+```bash
+docker pull forest611/whispersocket:latest
+docker run -d -p 3000:3000 \
+  -e OpenAI__ApiKey="your-api-key-here" \
+  -e Server__Port=3000 \
+  --name whispersocket forest611/whispersocket:latest
+```
+
+#### ソースからビルド
 1. イメージのビルド
 ```bash
 docker build -t whispersocket .
